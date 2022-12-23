@@ -1,13 +1,13 @@
 import usePacientes from "../hooks/usePacientes";
+import moment from 'moment/min/moment-with-locales';
 const Pacientes = ({paciente}) => {
 
     const { setEdicion, eliminarPaciente } = usePacientes();
     const {email, fecha, nombre, propietario, sintomas, _id} = paciente;
 
     const formatearFecha = (fecha) => {
-        const nuevaFecha = new Date(fecha);
-        console.log(nuevaFecha);
-        return new Intl.DateTimeFormat('default', {dateStyle: 'long'}).format(nuevaFecha);
+        const nuevaFecha = moment.utc(fecha).utcOffset('03:00');
+        return moment(nuevaFecha).locale('es').format('dddd D MMMM YYYY');
     }
 
   return (

@@ -3,6 +3,7 @@ import Alerta from './Alerta';
 import usePacientes from "../hooks/usePacientes";
 
 
+
 const Formulario = () => {
 
     const [nombre, setNombre] = useState('');
