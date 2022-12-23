@@ -1,11 +1,10 @@
 import { useState } from 'react'
 import AdminNav from "../components/AdminNav";
-import Alerta from "../components/Alerta";
+import Swal from 'sweetalert2';
 import useAuth from '../hooks/useAuth';
 
 const CambiarPassword = () => {
   const { guardarPassword } = useAuth();
-  const [alerta, setAlerta] = useState({});
   const [password, setPassword] = useState({
     passwordAnt : '',
     passwordNuevo: ''
@@ -17,30 +16,41 @@ const CambiarPassword = () => {
     e.preventDefault();
 
     if(Object.values(password).some( campo => campo === '')){
-      setAlerta({
-        msg: 'Todos los campos son obligatorios',
-        error: true
-      })
+      Swal.fire({
+        title: 'Todos los campos son obligatorios',
+        icon:'error',
+        timer: 2000
+    })
       return;
     };
 
     if(password.passwordNuevo.length < 6 ){
-      setAlerta({
-        msg: 'El password debe tener minimo 6 caracteres',
-        error: true
-      })
-
+      Swal.fire({
+        title: 'El password debe tener minimo 6 caracteres',
+        icon:'error',
+        timer: 2000
+    })
       return;
     }
 
     const respuesta = await guardarPassword(password);
 
-    setAlerta(respuesta);
+    if(!respuesta.error){
+      Swal.fire({
+        title: respuesta.msg,
+        icon:'success',
+        timer: 1500
+    })
+    }else {
+      Swal.fire({
+        title: respuesta.msg,
+        icon:'error',
+        timer: 2000
+    })
 
+    }
 
   };
-
-  const { msg } = alerta;
   return (
     <>
         <AdminNav/>
@@ -49,8 +59,6 @@ const CambiarPassword = () => {
 
         <div className="flex justify-center ">
             <div className="w-full md:w-1/2 bg-white shadow rounded-lg p-5">
-
-                {msg && <Alerta alerta={alerta}/>}
 
                 <form onSubmit={handleSubmit}>
                     <div className="my-3">

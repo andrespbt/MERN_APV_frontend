@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import AdminNav from "../components/AdminNav";
 import useAuth from "../hooks/useAuth";
-import Alerta from "../components/Alerta";
+import Swal from 'sweetalert2';
 
 const EditarPerfil = () => {
 
     const {auth, actualizarPerfil} = useAuth();
     const [perfil, setPerfil] = useState({});
-    const [alerta, setAlerta] = useState({});
 
     useEffect(() => {
         setPerfil(auth);
@@ -18,16 +17,20 @@ const EditarPerfil = () => {
         const { nombre, email } = perfil;
 
         if([nombre,email].includes('')){
-            setAlerta({
-                msg: 'Email y Nombre son obligatorios',
-                error: true
+            Swal.fire({
+                title: 'Email y Nombre son obligatorios',
+                icon:'error',
+                timer: 2000
             })
         }
 
         const resultado =  await actualizarPerfil(perfil);
-        setAlerta(resultado);
+        Swal.fire({
+            title: 'Almacenado correctamente',
+            icon:'success',
+            timer: 1500
+        })
     }
-    const { msg } = alerta;
   return (
    <>
     <AdminNav/>
@@ -36,8 +39,6 @@ const EditarPerfil = () => {
 
         <div className="flex justify-center ">
             <div className="w-full md:w-1/2 bg-white shadow rounded-lg p-5">
-
-                {msg && <Alerta alerta={alerta}/>}
 
                 <form onSubmit={handleSubmit}>
                     <div className="my-3">

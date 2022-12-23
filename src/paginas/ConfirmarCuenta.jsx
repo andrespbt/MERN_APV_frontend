@@ -2,11 +2,10 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link }from 'react-router-dom';
 import clienteAxios from '../config/axios'
-import Alerta from '../components/Alerta';
+import Swal from 'sweetalert2';
 const ConfirmarCuenta = () => {
         const [cuentaConfirmada, setCuentaConfirmada] = useState(false)
         const [cargando, setCargando] = useState(true)
-        const [alerta, setAlerta] = useState({})
 
     const params = useParams()
     const {id} = params
@@ -17,14 +16,18 @@ const ConfirmarCuenta = () => {
         try {
           const {data} = await clienteAxios(`/veterinarios/confirmar/${id}`);
           setCuentaConfirmada(true);
-          setAlerta({
-            msg: data.msg
-          })
+          Swal.fire({
+            title: data.msg,
+            icon:'success',
+            timer: 2000
+        })
           
         } catch (error) {
-          setAlerta({
-            msg: error.response.data.msg, error:true
-          })
+          Swal.fire({
+            title: error.response.data.msg,
+            icon:'error',
+            timer: 2000
+        })
         }
 
         setCargando(false);
@@ -39,13 +42,11 @@ const ConfirmarCuenta = () => {
                 <span className="text-black"> tus pacientes</span>
             </h1>
           </div>
-            <div  className='mt-20 md:mt-5 shadow-lg px-5 py-10 rounded-xl bg-white'>
-              {!cargando && <Alerta 
-              alerta={alerta}/>} 
+            <div  className='mt-20 md:mt-5 shadow-lg px-5 py-10 rounded-xl bg-white w-full max-w-lg'>
 
               { cuentaConfirmada && (
                 <Link 
-                className='block text-center my-5 text-gray-500'
+                className='from-indigo-400 to-indigo-600 bg-gradient-to-r text-center p-3 rounded-xl uppercase text-white font-bold text-sm w-50 mx-auto block'
                 to="/"> Inicia sesión </Link>
               )}
             </div>

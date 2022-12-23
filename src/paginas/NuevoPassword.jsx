@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Alerta from '../components/Alerta';
 import clienteAxios from '../config/axios';
+import Swal from 'sweetalert2';
 const NuevoPassword = () => {
 
   const [ password, setPassword ] = useState('');
@@ -35,9 +36,11 @@ const NuevoPassword = () => {
     e.preventDefault();
 
     if(password.length < 6){
-      setAlerta({
-        msg: 'El password debe ser minimo de 6 caracteres', error: true
-      })
+      Swal.fire({
+        title: 'El password debe ser minimo de 6 caracteres',
+        icon:'error',
+        timer: 2000
+    })
       return
     }
 
@@ -45,16 +48,20 @@ const NuevoPassword = () => {
       const url = `/veterinarios/olvide-password/${token}`;
       const { data } = await clienteAxios.post(url, { password });
       console.log(data);
-      setAlerta({
-        msg: data.msg
-      })
+      
+      Swal.fire({
+        title: data.msg,
+        icon:'success',
+        timer: 2000
+    })
 
       setPasswordModificado(true);
     } catch (error) {
-      setAlerta({
-        msg: error.response.data.msg, 
-        error:true      
-      })
+       Swal.fire({
+            title: error.response.data.msg,
+            icon:'error',
+            timer: 2000
+        })
     }
   }
 
@@ -69,7 +76,7 @@ const NuevoPassword = () => {
         </div>
 
         <div  className='mt-20 md:mt-5 shadow-lg px-5 py-10 rounded-xl bg-white'>
-         {msg && <Alerta
+         {!passwordModificado && msg && <Alerta
           alerta = {alerta}/>}
 
           { tokenValido && (
@@ -87,17 +94,24 @@ const NuevoPassword = () => {
              onChange={ e => setPassword(e.target.value)} 
              className="border w-full p-3 mt-3 bg-gray-50 rounded-xl" />
             </div>
-
-            <input 
-             type="submit" 
-             value="Reestablecer password"
-             className="bg-indigo-700 w-full py-3 px-10 rounded-xl text-white uppercase font-bold mt-5 hover:cursor-pointer hover:bg-indigo-800 md:w-auto" />
+            {!passwordModificado && (
+              <input 
+              type="submit" 
+              value="Reestablecer password"
+              className="bg-indigo-700 w-full py-3 px-10 rounded-xl text-white uppercase font-bold mt-5 hover:cursor-pointer hover:bg-indigo-800 md:w-auto"
+              />
+            )}
+            
           </form>
 
           { passwordModificado && (
-            <Link 
-            className='block text-center my-5 text-gray-500'
-            to="/">Inicia sesión</Link>
+           <Link 
+           className='from-indigo-400 to-indigo-600 bg-gradient-to-r text-center p-3 rounded-xl uppercase text-white font-bold text-sm w-50 mx-auto block mt-10'
+           to="/"> Inicia sesión </Link>
+
+
+
+           
           )}
             
             </>

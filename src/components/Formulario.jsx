@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import Alerta from './Alerta';
 import usePacientes from "../hooks/usePacientes";
+import Swal from 'sweetalert2';
 
 
 
@@ -14,8 +14,6 @@ const Formulario = () => {
     const [fecha, setFecha] = useState('');
     const [sintomas, setSintomas] = useState('');
     const [ id , setId] = useState(null);
-
-    const [alerta, setAlerta] = useState({});
 
     const { guardarPaciente, paciente } = usePacientes();
 
@@ -36,16 +34,14 @@ const Formulario = () => {
 
         // Validar formulario
         if([nombre,propietario,email,fecha,sintomas].includes('')){
-            setAlerta({
-                msg: 'Todos los campos son obligatorios',
-                error: true
+            Swal.fire({
+                title: 'Todos los campos son obligatorios',
+                icon:'error',
+                timer: 2000
             })
             return;
         }
         guardarPaciente({nombre,propietario,email,fecha,sintomas, id})
-        setAlerta({
-            msg: 'Guardado correctamente'
-        })
 
         setNombre('');
         setPropietario('');
@@ -54,8 +50,6 @@ const Formulario = () => {
         setSintomas('');
         setId('');
     }
-
-    const { msg } = alerta;
   return (
     <>
         <h2 className="font-black text-3xl text-center">Administrador de pacientes</h2>
@@ -136,7 +130,6 @@ const Formulario = () => {
             value={ id ? 'Guardar cambios' : 'Agregar paciente'}
              />
         </form>
-        { msg && <Alerta alerta={alerta} />}
     </>
   )
 }

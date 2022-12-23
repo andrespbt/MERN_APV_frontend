@@ -1,25 +1,25 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Alerta from '../components/Alerta';
 import useAuth from '../hooks/useAuth';
 import clienteAxios from '../config/axios';
+import Swal from 'sweetalert2';
 const Login = () => {
 
     const [ email, setEmail ] = useState('');
     const [ password, setPassword ] = useState('');
-    const [ alerta, setAlerta ] = useState({});
     const {setAuth} = useAuth();
     const navigate = useNavigate();
-    const { msg } = alerta;
 
     const handleSubmit = async(e) => {
         e.preventDefault();
 
         if([ email, password ].includes('')){
-            setAlerta({
-                msg: 'Todos los campos son obligatorios',
-                error: true
+            Swal.fire({
+                title: 'Todos los campos son obligatorios',
+                icon:'error',
+                timer: 2000
             })
+            return;
         }
 
         try {
@@ -28,10 +28,12 @@ const Login = () => {
             setAuth(data)
             navigate('/admin')
         } catch (error) {
-            setAlerta({
-                msg: error.response.data.msg,
-                error: true
+            Swal.fire({
+                title: error.response.data.msg,
+                icon:'error',
+                timer: 2000
             })
+            return;
         }
 
     };
@@ -44,9 +46,6 @@ const Login = () => {
             </h1>
         </div>
         <div className='mt-20 md:mt-5 shadow-lg px-5 py-10 rounded-xl bg-white'>
-                {msg && <Alerta
-                alerta = {alerta}
-                />}
             <form onSubmit={handleSubmit}>
                 <div className="my-5">
                     <label 
