@@ -6,7 +6,7 @@ const Pacientes = ({paciente}) => {
 
     const formatearFecha = (fecha) => {
         const nuevaFecha = new Date(fecha)
-        return new Intl.DateTimeFormat('es-AR', {dateStyle: 'long'}).format(nuevaFecha);
+        return new Intl.DateTimeFormat('default', {dateStyle: 'long'}).format(nuevaFecha);
     }
 
   return (
