@@ -3,7 +3,8 @@ import Pacientes from "./Pacientes";
 
 const ListadoPacientes = () => {
 
-  const { pacientes } = usePacientes();
+  let { pacientes } = usePacientes();
+  pacientes = [...pacientes].reverse();
   
   return (
     <>

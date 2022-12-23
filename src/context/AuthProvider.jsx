@@ -32,7 +32,6 @@ const AuthProvider = ({ children }) => {
             }
             setCargando(false);
         }
-
         autenticarUsuario();
     }, [])
 

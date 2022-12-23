@@ -6,6 +6,8 @@ import usePacientes from "../hooks/usePacientes";
 
 const Formulario = () => {
 
+    
+
     const [nombre, setNombre] = useState('');
     const [propietario, setPropietario] = useState('');
     const [email, setEmail] = useState('');
@@ -16,6 +18,7 @@ const Formulario = () => {
     const [alerta, setAlerta] = useState({});
 
     const { guardarPaciente, paciente } = usePacientes();
+
 
     useEffect(() => {
         if(paciente?.nombre){
