@@ -5,7 +5,8 @@ const Pacientes = ({paciente}) => {
     const {email, fecha, nombre, propietario, sintomas, _id} = paciente;
 
     const formatearFecha = (fecha) => {
-        const nuevaFecha = new Date(fecha)
+        const nuevaFecha = new Date(fecha);
+        console.log(nuevaFecha);
         return new Intl.DateTimeFormat('default', {dateStyle: 'long'}).format(nuevaFecha);
     }
 
